@@ -194,7 +194,7 @@ async def gsearch(q_event):
     gsearch = GoogleSearch()
     gresults = await gsearch.async_search(*search_args)
     msg = ""
-    for i in range(10):
+    for i in range(len(gresults["links"])):
         try:
             title = gresults["titles"][i]
             link = gresults["links"][i]
@@ -446,7 +446,7 @@ async def translateme(trans):
         )
 
 
-@register(pattern=".lang (trt|tts) (.*)", outgoing=True)
+@register(pattern="^.lang (trt|tts) (.*)", outgoing=True)
 async def lang(value):
     """ For .lang command, change the default langauge of userbot scrapers. """
     util = value.pattern_match.group(1).lower()
@@ -544,7 +544,7 @@ async def youtube_search(query,
         return (nexttok, videos)
 
 
-@register(outgoing=True, pattern=r".rip(audio|video) (.*)")
+@register(outgoing=True, pattern=r"^.rip(audio|video) (.*)")
 async def download_video(v_url):
     """ For .rip command, download media from YouTube and many other sites. """
     url = v_url.pattern_match.group(2)
@@ -648,7 +648,7 @@ async def download_video(v_url):
     if song:
         await v_url.edit(f"`Preparing to upload song:`\
         \n**{rip_data['title']}**\
-        \nby *{rip_data['uploader']}*")
+        \nby __{rip_data['uploader']}__")
         await v_url.client.send_file(
             v_url.chat_id,
             f"{rip_data['id']}.mp3",
@@ -667,7 +667,7 @@ async def download_video(v_url):
     elif video:
         await v_url.edit(f"`Preparing to upload video:`\
         \n**{rip_data['title']}**\
-        \nby *{rip_data['uploader']}*")
+        \nby __{rip_data['uploader']}__")
         await v_url.client.send_file(
             v_url.chat_id,
             f"{rip_data['id']}.mp4",
